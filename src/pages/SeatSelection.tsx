@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { movies, showTimes, theaters } from "@/data/movies";
+import { movies } from "@/data/movies";
+import { useAuth } from "@/contexts/AuthContext";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -21,9 +22,31 @@ interface Seat {
 const SeatSelection = () => {
   const { showId } = useParams();
   const navigate = useNavigate();
-  const showTime = showTimes.find((st) => st.id === showId);
-  const movie = movies.find((m) => m.id === showTime?.movieId);
-  const theater = theaters.find((t) => t.id === showTime?.theaterId);
+  const { user, loading } = useAuth();
+
+  // Find movie, theater, and showtime from the data structure
+  let movie, theater, showTime;
+  for (const m of movies) {
+    if (m.theaters) {
+      for (const t of m.theaters) {
+        const st = t.showTimes.find((s) => s.showId === showId);
+        if (st) {
+          movie = m;
+          theater = t;
+          showTime = st;
+          break;
+        }
+      }
+      if (showTime) break;
+    }
+  }
+
+  useEffect(() => {
+    if (!loading && !user) {
+      toast.error("Please sign in to book tickets");
+      navigate('/auth', { state: { from: `/book/${showId}` } });
+    }
+  }, [user, loading, navigate, showId]);
 
   // Generate seats
   const rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
@@ -62,14 +85,28 @@ const SeatSelection = () => {
   };
 
   const handleProceed = () => {
+    if (!user) {
+      toast.error("Please sign in to book tickets");
+      navigate('/auth');
+      return;
+    }
+
     if (selectedSeats.length === 0) {
       toast.error("Please select at least one seat");
       return;
     }
-    toast.success("Booking confirmed!", {
-      description: `${selectedSeats.length} seat(s) booked for ${movie?.title}`,
-    });
-    setTimeout(() => navigate("/"), 2000);
+
+    const bookingData = {
+      movieTitle: movie?.title,
+      theaterName: theater?.name,
+      showTime: showTime?.time,
+      showDate: "Today",
+      seats: selectedSeats.map(s => s.id),
+      basePrice: showTime?.price || 0,
+      totalAmount: calculateTotal() + selectedSeats.length * 30,
+    };
+
+    navigate("/payment", { state: bookingData });
   };
 
   if (!showTime || !movie || !theater) {
@@ -97,7 +134,7 @@ const SeatSelection = () => {
               <div className="mb-8">
                 <h2 className="text-2xl font-bold mb-2">{movie.title}</h2>
                 <p className="text-muted-foreground">
-                  {theater.name} | {showTime.date} | {showTime.time}
+                  {theater.name} | Today | {showTime.time}
                 </p>
               </div>
 

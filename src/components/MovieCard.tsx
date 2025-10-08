@@ -15,7 +15,7 @@ const MovieCard = ({ movie }: MovieCardProps) => {
       <Card className="group overflow-hidden transition-all hover:shadow-lg hover:scale-[1.02] cursor-pointer">
         <div className="relative aspect-[2/3] overflow-hidden">
           <img 
-            src={movie.poster} 
+            src={movie.image} 
             alt={movie.title}
             className="w-full h-full object-cover transition-transform group-hover:scale-110"
           />
@@ -35,7 +35,7 @@ const MovieCard = ({ movie }: MovieCardProps) => {
                 <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
                 <span className="text-sm font-medium text-white">{movie.rating}/10</span>
               </div>
-              <span className="text-xs text-white/80">{movie.votes.toLocaleString()} votes</span>
+              <span className="text-xs text-white/80">{movie.votes}</span>
             </div>
           </div>
         </div>
@@ -50,7 +50,7 @@ const MovieCard = ({ movie }: MovieCardProps) => {
             ))}
           </div>
           <p className="text-sm text-muted-foreground">
-            {movie.language} • {Math.floor(movie.duration / 60)}h {movie.duration % 60}m
+            {movie.language} • {movie.duration}
           </p>
         </CardContent>
       </Card>

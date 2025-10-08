@@ -1,11 +1,10 @@
 import { useParams, Link } from "react-router-dom";
-import { movies, showTimes, theaters } from "@/data/movies";
+import { movies } from "@/data/movies";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, Clock, Calendar } from "lucide-react";
-import { format } from "date-fns";
 
 const MovieDetail = () => {
   const { id } = useParams();
@@ -15,8 +14,7 @@ const MovieDetail = () => {
     return <div>Movie not found</div>;
   }
 
-  const movieShowTimes = showTimes.filter((st) => st.movieId === id);
-  const theaterIds = [...new Set(movieShowTimes.map((st) => st.theaterId))];
+  const hasTheaters = movie.theaters && movie.theaters.length > 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -25,7 +23,7 @@ const MovieDetail = () => {
       {/* Movie Banner */}
       <section className="relative h-[500px] overflow-hidden">
         <img
-          src={movie.banner}
+          src={movie.image}
           alt={movie.title}
           className="w-full h-full object-cover"
         />
@@ -35,7 +33,7 @@ const MovieDetail = () => {
           <div className="container pb-8">
             <div className="flex flex-col md:flex-row gap-6 items-start">
               <img
-                src={movie.poster}
+                src={movie.image}
                 alt={movie.title}
                 className="w-48 h-72 object-cover rounded-lg shadow-2xl"
               />
@@ -49,7 +47,7 @@ const MovieDetail = () => {
                     <span className="text-lg font-semibold">{movie.rating}/10</span>
                   </div>
                   <span className="text-muted-foreground">
-                    {movie.votes.toLocaleString()} votes
+                    {movie.votes}
                   </span>
                 </div>
 
@@ -64,27 +62,18 @@ const MovieDetail = () => {
                 <div className="flex items-center gap-6 text-muted-foreground mb-6">
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4" />
-                    <span>{Math.floor(movie.duration / 60)}h {movie.duration % 60}m</span>
+                    <span>{movie.duration}</span>
                   </div>
                   <span>•</span>
                   <span>{movie.language}</span>
                   <span>•</span>
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
-                    <span>{format(new Date(movie.releaseDate), "MMM d, yyyy")}</span>
+                    <span>{movie.releaseDate}</span>
                   </div>
                 </div>
 
                 <p className="text-lg mb-4 max-w-3xl">{movie.description}</p>
-
-                <div className="space-y-2">
-                  <p className="text-sm">
-                    <span className="font-semibold">Director:</span> {movie.director}
-                  </p>
-                  <p className="text-sm">
-                    <span className="font-semibold">Cast:</span> {movie.cast.join(", ")}
-                  </p>
-                </div>
               </div>
             </div>
           </div>
@@ -92,34 +81,24 @@ const MovieDetail = () => {
       </section>
 
       {/* Show Times */}
-      <section className="container py-12">
-        <h2 className="text-2xl font-bold mb-6">Book Tickets</h2>
+      {hasTheaters ? (
+        <section className="container py-12">
+          <h2 className="text-2xl font-bold mb-6">Book Tickets</h2>
 
-        <div className="space-y-6">
-          {theaterIds.map((theaterId) => {
-            const theater = theaters.find((t) => t.id === theaterId);
-            const theaterShows = movieShowTimes.filter((st) => st.theaterId === theaterId);
-
-            return (
-              <Card key={theaterId}>
+          <div className="space-y-6">
+            {movie.theaters?.map((theater) => (
+              <Card key={theater.id}>
                 <CardContent className="p-6">
                   <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
                     <div>
-                      <h3 className="font-semibold text-lg">{theater?.name}</h3>
-                      <p className="text-sm text-muted-foreground">{theater?.location}</p>
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {theater?.facilities.map((facility) => (
-                          <Badge key={facility} variant="outline" className="text-xs">
-                            {facility}
-                          </Badge>
-                        ))}
-                      </div>
+                      <h3 className="font-semibold text-lg">{theater.name}</h3>
+                      <p className="text-sm text-muted-foreground">{theater.location}</p>
                     </div>
                   </div>
 
                   <div className="flex flex-wrap gap-3">
-                    {theaterShows.map((show) => (
-                      <Link key={show.id} to={`/book/${show.id}`}>
+                    {theater.showTimes.map((show) => (
+                      <Link key={show.showId} to={`/book/${show.showId}`}>
                         <Button
                           variant="outline"
                           className="flex flex-col items-start h-auto py-3 px-4 hover:border-primary"
@@ -134,10 +113,22 @@ const MovieDetail = () => {
                   </div>
                 </CardContent>
               </Card>
-            );
-          })}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      ) : (
+        <section className="container py-12">
+          <Card>
+            <CardContent className="p-6 text-center">
+              <p className="text-muted-foreground">
+                {movie.type === 'stream' 
+                  ? 'This content is available for streaming. Check your favorite streaming platforms.'
+                  : 'Booking information coming soon.'}
+              </p>
+            </CardContent>
+          </Card>
+        </section>
+      )}
     </div>
   );
 };

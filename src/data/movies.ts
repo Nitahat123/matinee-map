@@ -1,188 +1,309 @@
+export type ContentType = 'movies' | 'stream' | 'events' | 'plays' | 'sports' | 'activities';
+
 export interface Movie {
   id: string;
   title: string;
-  genre: string[];
-  language: string;
-  duration: number;
+  image: string;
   rating: number;
-  votes: number;
-  releaseDate: string;
-  poster: string;
-  banner: string;
+  votes: string;
+  genre: string[];
   description: string;
-  cast: string[];
-  director: string;
+  duration: string;
+  language: string;
+  releaseDate: string;
+  type: ContentType;
+  theaters?: Theater[];
 }
 
 export interface ShowTime {
-  id: string;
-  movieId: string;
-  theaterId: string;
-  date: string;
   time: string;
   price: number;
-  availableSeats: number;
+  showId: string;
 }
 
 export interface Theater {
   id: string;
   name: string;
   location: string;
-  facilities: string[];
+  showTimes: ShowTime[];
 }
 
 export const movies: Movie[] = [
   {
     id: "1",
+    type: "movies",
     title: "Dune: Part Two",
-    genre: ["Action", "Sci-Fi", "Adventure"],
-    language: "English",
-    duration: 166,
-    rating: 8.8,
-    votes: 45000,
-    releaseDate: "2024-03-01",
-    poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&h=600&fit=crop",
-    banner: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=300&h=450&fit=crop",
+    rating: 9.2,
+    votes: "234.5K",
+    genre: ["Sci-Fi", "Adventure", "Drama"],
     description: "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.",
-    cast: ["Timothée Chalamet", "Zendaya", "Rebecca Ferguson", "Josh Brolin"],
-    director: "Denis Villeneuve"
+    duration: "2h 46m",
+    language: "English",
+    releaseDate: "1 Mar, 2024",
+    theaters: [
+      {
+        id: "t1",
+        name: "PVR: Phoenix Mall",
+        location: "Lower Parel, Mumbai",
+        showTimes: [
+          { time: "10:30 AM", price: 250, showId: "d2-t1-1030" },
+          { time: "2:15 PM", price: 300, showId: "d2-t1-1415" },
+          { time: "6:45 PM", price: 350, showId: "d2-t1-1845" },
+          { time: "10:30 PM", price: 300, showId: "d2-t1-2230" },
+        ],
+      },
+      {
+        id: "t2",
+        name: "INOX: Nariman Point",
+        location: "Nariman Point, Mumbai",
+        showTimes: [
+          { time: "11:00 AM", price: 280, showId: "d2-t2-1100" },
+          { time: "3:30 PM", price: 320, showId: "d2-t2-1530" },
+          { time: "7:00 PM", price: 380, showId: "d2-t2-1900" },
+        ],
+      },
+    ],
   },
   {
     id: "2",
+    type: "movies",
     title: "Oppenheimer",
+    image: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=300&h=450&fit=crop",
+    rating: 8.9,
+    votes: "189.2K",
     genre: ["Biography", "Drama", "History"],
-    language: "English",
-    duration: 180,
-    rating: 8.6,
-    votes: 52000,
-    releaseDate: "2024-02-15",
-    poster: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&h=600&fit=crop",
-    banner: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1200&h=400&fit=crop",
     description: "The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.",
-    cast: ["Cillian Murphy", "Emily Blunt", "Robert Downey Jr.", "Matt Damon"],
-    director: "Christopher Nolan"
+    duration: "3h 0m",
+    language: "English",
+    releaseDate: "21 Jul, 2023",
+    theaters: [
+      {
+        id: "t1",
+        name: "PVR: Phoenix Mall",
+        location: "Lower Parel, Mumbai",
+        showTimes: [
+          { time: "9:45 AM", price: 230, showId: "op-t1-0945" },
+          { time: "1:30 PM", price: 280, showId: "op-t1-1330" },
+          { time: "5:15 PM", price: 320, showId: "op-t1-1715" },
+        ],
+      },
+    ],
   },
   {
     id: "3",
-    title: "Inception Remastered",
-    genre: ["Action", "Sci-Fi", "Thriller"],
+    type: "stream",
+    title: "Stranger Things S5",
+    image: "https://images.unsplash.com/photo-1574267432644-f74f8ec44368?w=300&h=450&fit=crop",
+    rating: 8.7,
+    votes: "456.3K",
+    genre: ["Sci-Fi", "Horror", "Drama"],
+    description: "The final season of the beloved sci-fi horror series.",
+    duration: "8 Episodes",
     language: "English",
-    duration: 148,
-    rating: 8.8,
-    votes: 67000,
-    releaseDate: "2024-03-10",
-    poster: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=400&h=600&fit=crop",
-    banner: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1200&h=400&fit=crop",
-    description: "A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea.",
-    cast: ["Leonardo DiCaprio", "Joseph Gordon-Levitt", "Elliot Page", "Tom Hardy"],
-    director: "Christopher Nolan"
+    releaseDate: "Coming Soon",
   },
   {
     id: "4",
-    title: "The Batman Returns",
-    genre: ["Action", "Crime", "Drama"],
+    type: "stream",
+    title: "The Crown - Final Season",
+    image: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=300&h=450&fit=crop",
+    rating: 8.4,
+    votes: "234.1K",
+    genre: ["Drama", "History"],
+    description: "The final chapter of the royal saga.",
+    duration: "10 Episodes",
     language: "English",
-    duration: 176,
-    rating: 8.2,
-    votes: 48000,
-    releaseDate: "2024-03-05",
-    poster: "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=400&h=600&fit=crop",
-    banner: "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=1200&h=400&fit=crop",
-    description: "Batman ventures into Gotham City's underworld when a sadistic killer leaves behind a trail of cryptic clues.",
-    cast: ["Robert Pattinson", "Zoë Kravitz", "Paul Dano", "Colin Farrell"],
-    director: "Matt Reeves"
+    releaseDate: "16 Nov, 2023",
   },
   {
     id: "5",
-    title: "Interstellar Redux",
-    genre: ["Adventure", "Drama", "Sci-Fi"],
+    type: "events",
+    title: "Coldplay: Music of the Spheres",
+    image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=300&h=450&fit=crop",
+    rating: 9.5,
+    votes: "123.4K",
+    genre: ["Concert", "Live Music"],
+    description: "Experience Coldplay live in an unforgettable concert.",
+    duration: "3h 0m",
     language: "English",
-    duration: 169,
-    rating: 8.7,
-    votes: 71000,
-    releaseDate: "2024-02-28",
-    poster: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=400&h=600&fit=crop",
-    banner: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1200&h=400&fit=crop",
-    description: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
-    cast: ["Matthew McConaughey", "Anne Hathaway", "Jessica Chastain", "Michael Caine"],
-    director: "Christopher Nolan"
+    releaseDate: "19 Jan, 2025",
+    theaters: [
+      {
+        id: "e1",
+        name: "DY Patil Stadium",
+        location: "Navi Mumbai",
+        showTimes: [
+          { time: "7:00 PM", price: 2500, showId: "cp-e1-1900" },
+        ],
+      },
+    ],
   },
   {
     id: "6",
-    title: "Blade Runner 2099",
-    genre: ["Sci-Fi", "Thriller", "Drama"],
+    type: "events",
+    title: "Diljit Dosanjh Live",
+    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300&h=450&fit=crop",
+    rating: 9.1,
+    votes: "89.2K",
+    genre: ["Concert", "Punjabi Music"],
+    description: "An electrifying live performance by Diljit Dosanjh.",
+    duration: "2h 30m",
+    language: "Punjabi/Hindi",
+    releaseDate: "10 Feb, 2025",
+    theaters: [
+      {
+        id: "e2",
+        name: "Mahalaxmi Race Course",
+        location: "Mumbai",
+        showTimes: [
+          { time: "6:30 PM", price: 1500, showId: "dd-e2-1830" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "7",
+    type: "plays",
+    title: "The Lion King Musical",
+    image: "https://images.unsplash.com/photo-1503095396549-807759245b35?w=300&h=450&fit=crop",
+    rating: 9.4,
+    votes: "67.8K",
+    genre: ["Musical", "Family", "Drama"],
+    description: "Disney's award-winning musical comes to life on stage.",
+    duration: "2h 45m",
     language: "English",
-    duration: 155,
-    rating: 8.4,
-    votes: 39000,
-    releaseDate: "2024-03-12",
-    poster: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=400&h=600&fit=crop",
-    banner: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=1200&h=400&fit=crop",
-    description: "A young blade runner's discovery leads him on a quest to find a former runner who's been missing for decades.",
-    cast: ["Ryan Gosling", "Harrison Ford", "Ana de Armas", "Jared Leto"],
-    director: "Denis Villeneuve"
-  }
-];
-
-export const theaters: Theater[] = [
-  {
-    id: "t1",
-    name: "PVR Cinemas",
-    location: "Phoenix Marketcity, Mumbai",
-    facilities: ["Dolby Atmos", "Recliner Seats", "Food Court", "Parking"]
+    releaseDate: "15 Dec, 2024",
+    theaters: [
+      {
+        id: "p1",
+        name: "NCPA Theatre",
+        location: "Nariman Point, Mumbai",
+        showTimes: [
+          { time: "7:00 PM", price: 1200, showId: "lk-p1-1900" },
+          { time: "3:00 PM", price: 1000, showId: "lk-p1-1500" },
+        ],
+      },
+    ],
   },
   {
-    id: "t2",
-    name: "INOX Megaplex",
-    location: "Inorbit Mall, Mumbai",
-    facilities: ["IMAX", "4DX", "Premium Lounge", "Parking"]
+    id: "8",
+    type: "plays",
+    title: "Much Ado About Nothing",
+    image: "https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?w=300&h=450&fit=crop",
+    rating: 8.6,
+    votes: "34.5K",
+    genre: ["Comedy", "Romance", "Theatre"],
+    description: "Shakespeare's beloved comedy brought to modern stage.",
+    duration: "2h 15m",
+    language: "English",
+    releaseDate: "5 Jan, 2025",
+    theaters: [
+      {
+        id: "p2",
+        name: "Prithvi Theatre",
+        location: "Juhu, Mumbai",
+        showTimes: [
+          { time: "8:00 PM", price: 600, showId: "ma-p2-2000" },
+        ],
+      },
+    ],
   },
   {
-    id: "t3",
-    name: "Cinepolis",
-    location: "Viviana Mall, Thane",
-    facilities: ["VIP Seats", "Dolby Atmos", "Cafe", "Parking"]
+    id: "9",
+    type: "sports",
+    title: "IPL 2025: MI vs CSK",
+    image: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=300&h=450&fit=crop",
+    rating: 9.0,
+    votes: "234.2K",
+    genre: ["Cricket", "Sports"],
+    description: "The epic clash between Mumbai Indians and Chennai Super Kings.",
+    duration: "3h 30m",
+    language: "Hindi/English",
+    releaseDate: "25 Mar, 2025",
+    theaters: [
+      {
+        id: "s1",
+        name: "Wankhede Stadium",
+        location: "Marine Lines, Mumbai",
+        showTimes: [
+          { time: "7:30 PM", price: 800, showId: "ipl-s1-1930" },
+        ],
+      },
+    ],
   },
   {
-    id: "t4",
-    name: "Carnival Cinemas",
-    location: "R City Mall, Ghatkopar",
-    facilities: ["Premium Seats", "Food & Beverage", "Wheelchair Access"]
-  }
-];
-
-export const showTimes: ShowTime[] = [
-  // Dune: Part Two
-  { id: "s1", movieId: "1", theaterId: "t1", date: "2024-03-15", time: "10:00 AM", price: 250, availableSeats: 120 },
-  { id: "s2", movieId: "1", theaterId: "t1", date: "2024-03-15", time: "2:30 PM", price: 300, availableSeats: 95 },
-  { id: "s3", movieId: "1", theaterId: "t1", date: "2024-03-15", time: "6:45 PM", price: 350, availableSeats: 45 },
-  { id: "s4", movieId: "1", theaterId: "t2", date: "2024-03-15", time: "11:30 AM", price: 400, availableSeats: 80 },
-  { id: "s5", movieId: "1", theaterId: "t2", date: "2024-03-15", time: "4:00 PM", price: 450, availableSeats: 60 },
-  { id: "s6", movieId: "1", theaterId: "t3", date: "2024-03-15", time: "9:00 PM", price: 320, availableSeats: 110 },
-  
-  // Oppenheimer
-  { id: "s7", movieId: "2", theaterId: "t1", date: "2024-03-15", time: "1:00 PM", price: 280, availableSeats: 140 },
-  { id: "s8", movieId: "2", theaterId: "t2", date: "2024-03-15", time: "3:30 PM", price: 350, availableSeats: 75 },
-  { id: "s9", movieId: "2", theaterId: "t3", date: "2024-03-15", time: "7:15 PM", price: 300, availableSeats: 55 },
-  { id: "s10", movieId: "2", theaterId: "t4", date: "2024-03-15", time: "5:00 PM", price: 250, availableSeats: 130 },
-  
-  // Inception
-  { id: "s11", movieId: "3", theaterId: "t1", date: "2024-03-15", time: "12:00 PM", price: 270, availableSeats: 100 },
-  { id: "s12", movieId: "3", theaterId: "t2", date: "2024-03-15", time: "6:00 PM", price: 380, availableSeats: 40 },
-  { id: "s13", movieId: "3", theaterId: "t3", date: "2024-03-15", time: "9:30 PM", price: 310, availableSeats: 85 },
-  
-  // The Batman
-  { id: "s14", movieId: "4", theaterId: "t2", date: "2024-03-15", time: "1:45 PM", price: 320, availableSeats: 90 },
-  { id: "s15", movieId: "4", theaterId: "t3", date: "2024-03-15", time: "5:30 PM", price: 290, availableSeats: 105 },
-  { id: "s16", movieId: "4", theaterId: "t4", date: "2024-03-15", time: "8:00 PM", price: 260, availableSeats: 125 },
-  
-  // Interstellar
-  { id: "s17", movieId: "5", theaterId: "t1", date: "2024-03-15", time: "3:00 PM", price: 300, availableSeats: 70 },
-  { id: "s18", movieId: "5", theaterId: "t2", date: "2024-03-15", time: "8:30 PM", price: 420, availableSeats: 35 },
-  { id: "s19", movieId: "5", theaterId: "t4", date: "2024-03-15", time: "2:00 PM", price: 280, availableSeats: 115 },
-  
-  // Blade Runner
-  { id: "s20", movieId: "6", theaterId: "t1", date: "2024-03-15", time: "7:30 PM", price: 330, availableSeats: 50 },
-  { id: "s21", movieId: "6", theaterId: "t3", date: "2024-03-15", time: "4:15 PM", price: 295, availableSeats: 95 },
-  { id: "s22", movieId: "6", theaterId: "t4", date: "2024-03-15", time: "10:00 PM", price: 270, availableSeats: 135 }
+    id: "10",
+    type: "sports",
+    title: "Indian Super League Final",
+    image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=300&h=450&fit=crop",
+    rating: 8.3,
+    votes: "56.7K",
+    genre: ["Football", "Sports"],
+    description: "The ultimate showdown in Indian football.",
+    duration: "2h 0m",
+    language: "Hindi/English",
+    releaseDate: "20 Feb, 2025",
+    theaters: [
+      {
+        id: "s2",
+        name: "DY Patil Stadium",
+        location: "Navi Mumbai",
+        showTimes: [
+          { time: "6:00 PM", price: 500, showId: "isl-s2-1800" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "11",
+    type: "activities",
+    title: "Escape Room Adventure",
+    image: "https://images.unsplash.com/photo-1504309092620-4d0ec726efa4?w=300&h=450&fit=crop",
+    rating: 8.8,
+    votes: "12.3K",
+    genre: ["Adventure", "Puzzle", "Team Activity"],
+    description: "Test your problem-solving skills in this thrilling escape room experience.",
+    duration: "1h 30m",
+    language: "English/Hindi",
+    releaseDate: "Open Daily",
+    theaters: [
+      {
+        id: "a1",
+        name: "Mystery Rooms",
+        location: "Andheri, Mumbai",
+        showTimes: [
+          { time: "11:00 AM", price: 800, showId: "er-a1-1100" },
+          { time: "2:00 PM", price: 800, showId: "er-a1-1400" },
+          { time: "5:00 PM", price: 900, showId: "er-a1-1700" },
+          { time: "8:00 PM", price: 900, showId: "er-a1-2000" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "12",
+    type: "activities",
+    title: "Virtual Reality Gaming",
+    image: "https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=300&h=450&fit=crop",
+    rating: 9.1,
+    votes: "18.9K",
+    genre: ["Gaming", "VR", "Entertainment"],
+    description: "Immerse yourself in the latest VR gaming experiences.",
+    duration: "1h 0m",
+    language: "English/Hindi",
+    releaseDate: "Open Daily",
+    theaters: [
+      {
+        id: "a2",
+        name: "SMAAASH",
+        location: "Lower Parel, Mumbai",
+        showTimes: [
+          { time: "12:00 PM", price: 600, showId: "vr-a2-1200" },
+          { time: "3:00 PM", price: 600, showId: "vr-a2-1500" },
+          { time: "6:00 PM", price: 700, showId: "vr-a2-1800" },
+        ],
+      },
+    ],
+  },
 ];
